@@ -7,9 +7,13 @@ public class UserDAO {
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM user WHERE username = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null! Check your database configuration.");
+            return null;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -17,6 +21,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error getting user by username: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -25,9 +30,13 @@ public class UserDAO {
     public User getUserById(int userId) {
         String sql = "SELECT * FROM user WHERE user_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return null;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -35,6 +44,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error getting user by ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -43,9 +53,13 @@ public class UserDAO {
     public boolean addUser(User user) {
         String sql = "INSERT INTO user (username, password, email, nama, tgl_dftr, status_lgn, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return false;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getEmail());
@@ -56,6 +70,7 @@ public class UserDAO {
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error adding user: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -64,14 +79,19 @@ public class UserDAO {
     public boolean updateUserStatus(int userId, boolean status) {
         String sql = "UPDATE user SET status_lgn = ? WHERE user_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return false;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setBoolean(1, status);
             stmt.setInt(2, userId);
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error updating user status: " + e.getMessage());
             e.printStackTrace();
         }
         return false;

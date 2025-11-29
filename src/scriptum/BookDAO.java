@@ -10,14 +10,20 @@ public class BookDAO {
         List<Buku> books = new ArrayList<>();
         String sql = "SELECT * FROM buku ORDER BY judul";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return books;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             
             while (rs.next()) {
                 books.add(extractBookFromResultSet(rs));
             }
         } catch (SQLException e) {
+            System.err.println("Error getting all books: " + e.getMessage());
             e.printStackTrace();
         }
         return books;
@@ -26,9 +32,13 @@ public class BookDAO {
     public Buku getBookById(int id) {
         String sql = "SELECT * FROM buku WHERE buku_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return null;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -36,6 +46,7 @@ public class BookDAO {
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error getting book by ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -44,9 +55,13 @@ public class BookDAO {
     public boolean addBook(Buku buku) {
         String sql = "INSERT INTO buku (judul, penulis, penerbit, thn_terbit, ktegori, stok) VALUES (?, ?, ?, ?, ?, ?)";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return false;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, buku.getJudul());
             stmt.setString(2, buku.getPenulis());
             stmt.setString(3, buku.getPenerbit());
@@ -56,6 +71,7 @@ public class BookDAO {
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error adding book: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -64,9 +80,13 @@ public class BookDAO {
     public boolean updateBook(Buku buku) {
         String sql = "UPDATE buku SET judul = ?, penulis = ?, penerbit = ?, thn_terbit = ?, ktegori = ?, stok = ? WHERE buku_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return false;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, buku.getJudul());
             stmt.setString(2, buku.getPenulis());
             stmt.setString(3, buku.getPenerbit());
@@ -77,6 +97,7 @@ public class BookDAO {
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error updating book: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -85,12 +106,17 @@ public class BookDAO {
     public boolean deleteBook(int id) {
         String sql = "DELETE FROM buku WHERE buku_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return false;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error deleting book: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -100,9 +126,13 @@ public class BookDAO {
         List<Buku> books = new ArrayList<>();
         String sql = "SELECT * FROM buku WHERE judul LIKE ? OR penulis LIKE ? OR ktegori LIKE ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Database connection is null!");
+            return books;
+        }
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String searchPattern = "%" + keyword + "%";
             stmt.setString(1, searchPattern);
             stmt.setString(2, searchPattern);
@@ -114,6 +144,7 @@ public class BookDAO {
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error searching books: " + e.getMessage());
             e.printStackTrace();
         }
         return books;

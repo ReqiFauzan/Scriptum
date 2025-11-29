@@ -1,4 +1,4 @@
-package scriptum;
+package scriptum; 
 
 import java.io.IOException;
 import java.time.LocalDate;
