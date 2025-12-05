@@ -1,0 +1,15 @@
+scriptum\Laporan.class
+scriptum\BookDAO.class
+scriptum\BookServlet.class
+scriptum\Pengembalian.class
+scriptum\DatabaseConnection.class
+scriptum\LogoutServlet.class
+scriptum\LoginServlet.class
+scriptum\User.class
+scriptum\Notifikasi.class
+scriptum\DashboardServlet.class
+scriptum\Main.class
+scriptum\Peminjaman.class
+scriptum\Buku.class
+scriptum\AuthService.class
+scriptum\UserDAO.class
