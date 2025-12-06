@@ -1,19 +1,22 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.project.sourcePaths": [
-        "src"
-    ],
-    "java.project.outputPath": "target/classes",
-    "java.configuration.maven.userSettings": null,
-    "java.import.maven.enabled": true,
-    "java.maven.downloadSources": true,
-    "java.maven.downloadJavadoc": true,
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
+  "java.project.outputPath": "target/classes",
+  "java.configuration.maven.userSettings": "",
+  "java.import.maven.enabled": true,
+  "java.maven.downloadSources": true,
+  "java.maven.downloadJavadocs": true,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "communityServerConnectors.tomcat.installations": [
+    {
+      "path": "C:/APKbaru/Apache-tomcat-9.0.11"
     }
+  ],
+  "communityServerConnectors.server.connectorPort": 9809,
+  "communityServerConnectors.java.home": "C:/Program Files/Java/jdk-25",
+  "communityServerConnectors.autoStart": false,
+  "communityServerConnectors.enableLogging": true
 }
-
